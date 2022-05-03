@@ -21,137 +21,162 @@ SELECT * FROM third_quater
 UNION ALL
 SELECT * FROM fourth_quater
 )
+--COMBIME ALL QUATERS INTO A TABLE
+SELECT *
+INTO Hires_2019
+FROM cte
+
+--The total number of userstype
+SELECT COUNT(*)
+FROM Hires_2019
+
+
+--The total number of users type(customers)
+SELECT COUNT(*)
+FROM Hires_2019
+WHERE usertype='customer'
+
+--The total number of users type(subscribers)
+SELECT COUNT(*)
+FROM Hires_2019
+WHERE usertype='subscriber'
+
 --Assessing hires in weekdays to know how why bikes are hired based on the customer categories
 --Days of the week compared to usertype (customer)
-/*SELECT cte.day_of_week
+SELECT day_of_week
 	,COUNT(day_of_week) AS count
-	,cte.usertype
-FROM cte
-WHERE cte.usertype='customer'
+	,usertype
+FROM Hires_2019
+WHERE usertype='customer'
 GROUP BY day_of_week
 	,usertype
-ORDER BY 1 DESC*/
+ORDER BY 1 DESC
 
 --Days of the week compared to usertype (subscriber)
-/*SELECT cte.day_of_week
+SELECT day_of_week
 	,COUNT(day_of_week) AS count
 	,cte.usertype
-FROM cte
-WHERE cte.usertype='subscriber'
+FROM Hires_2019
+WHERE usertype='subscriber'
 GROUP BY day_of_week
 	,usertype
-ORDER BY 2 DESC*/
+ORDER BY 2 DESC
 
 /*And from our above Query it shows that customers have a higher hiring rate in the weekends
 And subscribers around week days*/
 
 -- Ages of customer, according to higher hiring rate
-/*SELECT cte.birthyear
+SELECT cte.birthyear
 	,COUNT(*) AS count
-FROM cte
-WHERE cte.usertype ='customer'
+FROM Hires_2019
+WHERE usertype ='customer'
 AND day_of_week IN (1,7)
-GROUP BY cte.birthyear
-ORDER BY 2 DESC*/
+GROUP BY birthyear
+ORDER BY 2 DESC
 
 --From the query above it shows customers age with hires above 1000 fall into the Millennials and Gen Z 
 
 --Ages of subscriber, according to higher hiring rate
-/*SELECT cte.birthyear
+SELECT birthyear
 	,COUNT(*) AS count
-FROM cte
-WHERE cte.usertype ='subscriber'
+FROM Hires_2019
+WHERE usertype ='subscriber'
 AND day_of_week IN (2,3,4,5,6)
-GROUP BY cte.birthyear
-ORDER BY 2 DESC*/
+GROUP BY birthyear
+ORDER BY 2 DESC
 
 --From the query above subscribers are all from Boomers ll to Gen Z with hires above 1000
 
 
---The total number of users type(customer)
-/*SELECT COUNT(*)
-FROM cte
-WHERE usertype='customer'*/
-
---The total number of users type(subscriber)
-/*SELECT COUNT(*)
-FROM cte
-WHERE usertype='subscriber'*/
-
 --To see customer born under specific years
-/*SELECT cte.birthyear
-	,cte.usertype
+SELECT birthyear
+	,usertype
 	,COUNT(*)
-FROM cte
+FROM Hires_2019
 WHERE usertype='customer'
-GROUP BY cte.birthyear
-	,cte.usertype
-ORDER BY 1 DESC*/
+GROUP BY birthyear
+	,usertype
+ORDER BY 1 DESC
 
 --To see subscriber born under specific years
-/*SELECT cte.birthyear
-	,cte.usertype
+SELECT birthyear
+	,usertype
 	,COUNT(*)
-FROM cte
+FROM Hires_2019
 WHERE usertype='subscriber'
-GROUP BY cte.birthyear
-	,cte.usertype
-ORDER BY 1 DESC*/
+GROUP BY birthyear
+	,usertype
+ORDER BY 1 DESC
 
 
 --To see stations and how many customers they have
-/*SELECT cte.from_station_id
-	,cte.from_station_name
-	,cte.usertype
-	,COUNT(cte.usertype)
-FROM cte
+SELECT from_station_id
+	,from_station_name
+	,usertype
+	,COUNT(usertype)
+FROM Hires_2019
 WHERE usertype='customer'
-GROUP BY cte.from_station_id
-	,cte.from_station_name
-	,cte.usertype
-ORDER BY 1 DESC*/
+GROUP BY from_station_id
+	,from_station_name
+	,usertype
+ORDER BY 1 DESC
 --NOTE from the above query,once you know how many users a station has you also see how profitable the station is
 
 --Stations with number of customers that hires according to the days of the week
 --For weekends
-/*SELECT cte.from_station_id
-	,cte.from_station_name
-	,cte.usertype
-	,COUNT(cte.usertype) as count_of_user
-FROM cte
+SELECT from_station_id
+	,from_station_name
+	,usertype
+	,COUNT(usertype) as count_of_user
+FROM Hires_2019
 WHERE usertype ='customer'
 AND day_of_week in(1,7)
-GROUP BY cte.from_station_id
-	,cte.from_station_name
-	,cte.usertype
-ORDER BY 4 DESC*/
+GROUP BY from_station_id
+	,from_station_name
+	,usertype
+ORDER BY 4 DESC
 --This query shows the number of each customers who make hires from each stations on weekends
 
 --For week_day
-/*SELECT cte.from_station_id
-	,cte.from_station_name
-	,cte.usertype
-	,COUNT(cte.usertype)
-FROM cte
+SELECT from_station_id
+	,from_station_name
+	,usertype
+	,COUNT(usertype)
+FROM Hires_2019
 WHERE usertype ='customer'
 AND day_of_week in(2,3,4,5,6)
-GROUP BY cte.from_station_id
-	,cte.from_station_name
-	,cte.usertype
-ORDER BY 4 DESC*/
+GROUP BY from_station_id
+	,from_station_name
+	,usertype
+ORDER BY 4 DESC
 --This query shows the number of each customers who make hires from each stations on weekdays
 
 
 --Bikes that are frequently used incase of maintainance 
-/*SELECT cte.bikeid	
+SELECT bikeid	
 	,COUNT(bikeid)
-FROM cte
-GROUP BY cte.bikeid
-ORDER BY 2 DESC*/
+FROM Hires_2019
+GROUP BY bikeid
+ORDER BY 2 DESC
 --The above query shows how many times a bike has been used for the cause of this year
 
-SELECT DISTINCT COUNT(bikeid)
-FROM cte
+--BestPerfroming Month
+SELECT  COUNT(*) AS Count
+	,EXTRACT(MONTH FROM start_time) as Month
+FROM Hires_2019
+GROUP BY EXTRACT(MONTH FROM start_time)
+ORDER BY 2 DESC
+
+--In case our business wants to reward our customers with higher ride_length
+SELECT *
+FROM Hires_2019
+WHERE ride_length>(
+	SELECT AVG(ride_length)
+	FROM Hires_2019)
+AND day_of_week IN(1,7)
+
+
+
 
 
 

@@ -1,7 +1,7 @@
 /*Cyclistic is bike-share company launched in 2016,
 the program has grown to a fleet of 5,824 bicycles that are geotracked and locked into a network of 692 stations across chicago.
 This dataset is from hire in 2019
-Cyclistic's business need is to figure out how to get casual riders (clients) to become annual members (Subscribers)
+Cyclistic's business need is to figure out how to get casual riders (customers) to become annual members (Subscribers)
 This dataset will be used for additional analysis in order to improve the business.
 1.What are the differences in how annual members and casual riders use bicycles?
 a. how clients ride their bikes on different days of the week b. how long they spend on trips
@@ -108,7 +108,13 @@ GROUP BY birthyear
 	,usertype
 ORDER BY 1 DESC
 
-
+The most profitable month
+SElECT EXTRACT('Month' FROM Start_time) as Month
+	,COUNT(Trip_id) AS Trip_count
+FROM Hires_2019
+GROUP BY EXTRACT('Month' FROM Start_time) as Month
+ORDER BY Trip_count
+	
 --To see stations and how many customers they have
 SELECT from_station_id
 	,from_station_name
@@ -180,16 +186,19 @@ AND day_of_week IN(1,7)
 
 
 
-/*RECOMMENDATION
-1. A marketing plan will be to promote additional weekend activities such as biking and racing (marathon)
-2. After a certain number of hiring, you may be able to offer top casual riders free trips..
-3. By making a promotion to target weekends, since weekends has greater hire from causal riders
-4. We can observe from our study that our casual riders hire more on weekends.
-   We also discovered that Gen Z and Minnellas (those born between 1975 and 2000) have more weekend hires than any other age group.
-   For optimum reach, the advertisement should be run on social media.
-5. Based on the results of the foregoing study, the stations with the most causal passengers should receive the greatest promotion attention.
+/*INSIGHTS
+1.We have a total of 2.99 million riders, 525,830 are customers and 2.46 million are subscribers.
+2.Cyclistic records shows subscribers hiring rate is higher during the week and customers during the weekend.
+3.Going further, observed our customers (casual riders) fall more under the ages of 19-36.
+4.Summer months ( June, July, August, September), experience higher hire consider to other months.
 
-*/ 
+
+RECOMMENDATION
+1.Since customers(casual riders) are more on the weekend. I would recommend, Cyclistic promoting weekend activities as biking racing, exercise for members.
+2.Promoting summer activities such as bike competition for members, during the summer period.
+3.Discovered Gen Z and Minnellas (those born between 1975 and 2000) have more weekend hires than any other age group under the customer category. For optimum reach, the advertisement should be run on social media.
+4.Stations with more customers hiring rate, I recommend should be the target.
+*/
 		
 
 		 

@@ -18,6 +18,12 @@ Tools used in achieving the goals;
 * Power BI - for visualizations
 * Charts - to visualise results
 
+
+## A line chart representing how customers hire according to days of the week
+
+![Screenshot (101)](https://user-images.githubusercontent.com/103642582/187443704-e95b8f45-f02a-4d12-8af7-e895da35e719.png)
+
+
 ## End Results
 Recommendation from analysis
 
